@@ -6,10 +6,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent }  from './app.component';
 import { MajorListComponent }    from './indicators/major-list.component';
+import { AttrMajorListComponent }    from './attributes/attr-major-list.component';
 import { StudentDetailComponent } from './students/student-detail.component';
 import { StudentListComponent } from './students/student-list.component';
 import { IndicatorListComponent } from './indicators/indicator-list.component';
 import { IndicatorDetailComponent } from './indicators/indicator-detail.component';
+import { AttributeListComponent } from './attributes/attribute-list.component';
+import { AttributeDetailComponent } from './attributes/attribute-detail.component';
+import { AggregateDetailComponent } from './attributes/aggregate-detail.component';
 import { routing } from './app.routes';
 
 @NgModule({
@@ -22,10 +26,15 @@ import { routing } from './app.routes';
   declarations: [
     AppComponent,
     MajorListComponent,
+    AttrMajorListComponent,
     StudentDetailComponent,
     StudentListComponent,
     IndicatorListComponent,
-    IndicatorDetailComponent 
+    IndicatorDetailComponent, 
+    AttributeListComponent,
+    AttributeDetailComponent, 
+    AggregateDetailComponent
+
   ],
   bootstrap: [ AppComponent ]
 })

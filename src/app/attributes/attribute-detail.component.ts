@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PerfDist } from '../perfs/perfdist';
 
 @Component({
-  selector: 'indicator-detail',
+  selector: 'attribute-detail',
   template: `
-    <div *ngIf="indicator">
-      <h2>Indicator details:</h2>
+    <div *ngIf="attribute">
+      <h2>Graduate Attribute details:</h2>
           <div style="display: block">
                 <canvas baseChart
                 [datasets]="barChartDataPerf"
@@ -17,8 +17,8 @@ import { PerfDist } from '../perfs/perfdist';
     </div>
   `
 })
-export class IndicatorDetailComponent implements OnInit {
-  @Input() indicator: PerfDist;
+export class AttributeDetailComponent implements OnInit {
+  @Input() attribute: PerfDist;
 
    public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
 
@@ -41,7 +41,7 @@ export class IndicatorDetailComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Percentage of Students'
+          labelString: 'Number of Students'
         }
       }],
       xAxes: [{
@@ -53,13 +53,13 @@ export class IndicatorDetailComponent implements OnInit {
     }
   };
 
-    public drawIndicatorPerformanceChart(ind: PerfDist):void {
+    public drawAttributePerformanceChart(attr: PerfDist):void {
     var results: number[] = [];
-    console.log(ind.perfs)
-    var below = ind.perfs.BELOW_EXPECTATIONS;
-    var marginal = ind.perfs.MARGINAL;
-    var meets = ind.perfs.MEETS_EXPECTATIONS;
-    var exceeds = ind.perfs.EXCEEDS_EXPECTATIONS;
+    console.log(attr.perfs)
+    var below = attr.perfs.BELOW_EXPECTATIONS;
+    var marginal = attr.perfs.MARGINAL;
+    var meets = attr.perfs.MEETS_EXPECTATIONS;
+    var exceeds = attr.perfs.EXCEEDS_EXPECTATIONS;
     var total = below + marginal + meets + exceeds;
     results.push(Math.round(below/total * 100));
     results.push(Math.round(marginal/total * 100));
@@ -71,11 +71,11 @@ export class IndicatorDetailComponent implements OnInit {
   }
 
    ngOnInit(){
-    this.drawIndicatorPerformanceChart(this.indicator);
+    this.drawAttributePerformanceChart(this.attribute);
   }
 
   ngOnChanges(){
-    this.drawIndicatorPerformanceChart(this.indicator);
+    this.drawAttributePerformanceChart(this.attribute);
   }
 }
 

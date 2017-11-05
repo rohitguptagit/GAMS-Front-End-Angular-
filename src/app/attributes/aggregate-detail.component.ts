@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PerfDist } from '../perfs/perfdist';
 
 @Component({
-  selector: 'indicator-detail',
+  selector: 'aggregate-detail',
   template: `
-    <div *ngIf="indicator">
-      <h2>Indicator details:</h2>
+    <div *ngIf="aggregate">
+      <h2>Aggregated Scores:</h2>
           <div style="display: block">
                 <canvas baseChart
                 [datasets]="barChartDataPerf"
@@ -17,8 +17,8 @@ import { PerfDist } from '../perfs/perfdist';
     </div>
   `
 })
-export class IndicatorDetailComponent implements OnInit {
-  @Input() indicator: PerfDist;
+export class AggregateDetailComponent implements OnInit {
+  @Input() aggregate: PerfDist[];
 
    public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
 
@@ -26,8 +26,11 @@ export class IndicatorDetailComponent implements OnInit {
   public barChartLegendPerf:boolean = false;
 
   public barChartDataPerf:any[] = [
-    {data: [0, 0, 0, 0] }
-  ];
+    {
+      label: '',
+      data: [0, 0, 0, 0] 
+    }
+    ];
 
   public barChartOptionsPerf:any = {
     scaleShowVerticalLines: false,
@@ -41,7 +44,7 @@ export class IndicatorDetailComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Percentage of Students'
+          labelString: 'Number of Students'
         }
       }],
       xAxes: [{
@@ -53,29 +56,39 @@ export class IndicatorDetailComponent implements OnInit {
     }
   };
 
-    public drawIndicatorPerformanceChart(ind: PerfDist):void {
-    var results: number[] = [];
-    console.log(ind.perfs)
-    var below = ind.perfs.BELOW_EXPECTATIONS;
-    var marginal = ind.perfs.MARGINAL;
-    var meets = ind.perfs.MEETS_EXPECTATIONS;
-    var exceeds = ind.perfs.EXCEEDS_EXPECTATIONS;
+
+
+  public drawAggregatePerformanceChart(aggregate: PerfDist[]):void {
+    var loader: DataLoader[] = [];
+
+    for(let attr of aggregate){
+      var load: DataLoader = new DataLoader();
+    var below = attr.perfs.BELOW_EXPECTATIONS;
+    var marginal = attr.perfs.MARGINAL;
+    var meets = attr.perfs.MEETS_EXPECTATIONS;
+    var exceeds = attr.perfs.EXCEEDS_EXPECTATIONS;
     var total = below + marginal + meets + exceeds;
-    results.push(Math.round(below/total * 100));
-    results.push(Math.round(marginal/total * 100));
-    results.push(Math.round(meets/total * 100));
-    results.push(Math.round(exceeds/total * 100));
-    let clone = JSON.parse(JSON.stringify(this.barChartDataPerf));
-    clone[0].data = results;
-    this.barChartDataPerf = clone;
+    load.data.push(Math.round(below/total * 100));
+    load.data.push(Math.round(marginal/total * 100));
+    load.data.push(Math.round(meets/total * 100));
+    load.data.push(Math.round(exceeds/total * 100));
+
+      load.label = attr.name;
+
+      loader.push(load);
+    }
+    this.barChartDataPerf = loader;
   }
 
    ngOnInit(){
-    this.drawIndicatorPerformanceChart(this.indicator);
+    this.drawAggregatePerformanceChart(this.aggregate);
   }
 
   ngOnChanges(){
-    this.drawIndicatorPerformanceChart(this.indicator);
+    this.drawAggregatePerformanceChart(this.aggregate);
   }
 }
-
+export class DataLoader {
+  label: string;
+  data: number[] = [];
+}

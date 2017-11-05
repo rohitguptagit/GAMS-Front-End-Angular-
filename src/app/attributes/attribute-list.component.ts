@@ -2,28 +2,28 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Performance } from '../performance';
 import { PerfDist } from '../perfs/perfdist';
-import { IndicatorDetailComponent } from './indicator-detail.component';
-import { AggregateDetailComponent } from '../attributes/aggregate-detail.component';
+import { AttributeDetailComponent } from './attribute-detail.component';
+import { AggregateDetailComponent } from './aggregate-detail.component';
 
 @Component({
-  selector: 'indicator-list',
+  selector: 'attribute-list',
   template: `
      <div *ngIf="major">
       <h3>{{title}}</h3>
-       <ul class="inds">
-          <li *ngFor="let ind of major.range.inds"
-          [class.selected]="ind === selectedInd"
-            (click)="onSelect(ind)">
-            {{ind.name}}
+       <ul class="atts">
+          <li *ngFor="let attr of major.range.atts"
+          [class.selected]="attr === selectedAttr"
+            (click)="onSelect(attr)">
+            {{attr.name}}
           </li>
           <li [class.selected]="agg"
-          (click)="onSelectAgg()"> Aggregated Indicators</li>
+          (click)="onSelectAgg()"> Aggregated GA's</li>
         </ul>
         <div *ngIf="agg">
-           <aggregate-detail [aggregate]="major.range.inds"></aggregate-detail>
+           <aggregate-detail [aggregate]="major.range.atts"></aggregate-detail>
         </div>
-        <div *ngIf="selectedInd && !agg">
-          <indicator-detail [indicator]="selectedInd"></indicator-detail>
+        <div *ngIf="selectedAttr && !agg">
+          <attribute-detail [attribute]="selectedAttr"></attribute-detail>
         </div>
         </div>
         
@@ -33,13 +33,13 @@ import { AggregateDetailComponent } from '../attributes/aggregate-detail.compone
       background-color: #CFD8DC !important;
       color: white;
     }
-    .inds {
+    .atts {
       margin: 0 0 2em 0;
       list-style-type: none;
       padding: 0;
-      width: 15em;
+      width: 25em;
     }
-    .inds li {
+    .atts li {
       text-align: center;
       cursor: pointer;
       position: relative;
@@ -50,20 +50,20 @@ import { AggregateDetailComponent } from '../attributes/aggregate-detail.compone
       height: 1.6em;
       border-radius: 4px;
     }
-    .inds li.selected:hover {
+    .atts li.selected:hover {
       background-color: #BBD8DC !important;
       color: white;
     }
-    .inds li:hover {
+    .atts li:hover {
       color: #607D8B;
       background-color: #DDD;
       left: .1em;
     }
-    .inds .text {
+    .atts .text {
       position: relative;
       top: -3px;
     }
-    .inds .badge {
+    .atts .badge {
       display: inline-block;
       font-size: small;
       color: white;
@@ -80,22 +80,22 @@ import { AggregateDetailComponent } from '../attributes/aggregate-detail.compone
   `],
 })
 // Component class implementing OnInit
-export class IndicatorListComponent implements OnInit {
+export class AttributeListComponent implements OnInit {
   
   @Input() major: Performance;
 
-  title = 'Available Indicators:';
+  title = 'Available Graduate Attributes:';
 
-  selectedInd: PerfDist;
+  selectedAttr: PerfDist;
   agg: boolean = false;
 
-  onSelect(ind: PerfDist): void {
-    this.selectedInd = ind;
+  onSelect(attr: PerfDist): void {
+    this.selectedAttr = attr;
     this.agg = false;
   }
 
-    onSelectAgg(): void {
-    this.selectedInd = null;
+  onSelectAgg(): void {
+    this.selectedAttr = null;
     this.agg = true;
   }
 

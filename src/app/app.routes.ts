@@ -5,6 +5,7 @@ import { ModuleWithProviders }  from '@angular/core';
 
 import { studentRoutes }    from './students/student.routes';
 import { indicatorRoutes }  from './indicators/indicator.routes';
+import { attributeRoutes }  from './attributes/attribute.routes';
 
 // Route Configuration
 export const routes: Routes = [
@@ -15,7 +16,8 @@ export const routes: Routes = [
   },
     // Add dog routes form a different file
   ...studentRoutes,
-  ...indicatorRoutes
+  ...indicatorRoutes,
+  ...attributeRoutes
 ];
 
 // Deprecated provide
