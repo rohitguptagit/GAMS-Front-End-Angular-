@@ -18,7 +18,6 @@ import { PerformanceService } from './performance.service';
       <li><a routerLink="/students"  routerLinkActive="active">Student Data</a></li>
       <li><a routerLink="/indicators"  routerLinkActive="active">Indicator Analysis</a></li>
       <li><a routerLink="/attributes"  routerLinkActive="active">Graduate Attribute Analysis</a></li>
-      <li><a routerLink="/other"  routerLinkActive="active">Other Data</a></li>
     </ul>
   </div>
 </nav>

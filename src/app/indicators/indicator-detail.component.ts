@@ -5,6 +5,7 @@ import { PerfDist } from '../perfs/perfdist';
   selector: 'indicator-detail',
   template: `
     <div *ngIf="indicator">
+    <button ng-click="exportPDF()">Export PDF</button>
       <h2>Indicator details:</h2>
           <div style="display: block">
                 <canvas baseChart
@@ -13,14 +14,19 @@ import { PerfDist } from '../perfs/perfdist';
                 [options]="barChartOptionsPerf"
                 [legend]="barChartLegendPerf"
                 [chartType]="barChartTypePerf"></canvas>
-              </div>
+            </div>
     </div>
   `
 })
 export class IndicatorDetailComponent implements OnInit {
   @Input() indicator: PerfDist;
 
-   public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
+  public exportPDF(){
+    var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+    //pdfMake.createPdf(docDefinition).open();
+  }
+
+  public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
 
   public barChartTypePerf:string = 'bar';
   public barChartLegendPerf:boolean = false;
@@ -54,20 +60,19 @@ export class IndicatorDetailComponent implements OnInit {
   };
 
     public drawIndicatorPerformanceChart(ind: PerfDist):void {
-    var results: number[] = [];
-    console.log(ind.perfs)
-    var below = ind.perfs.BELOW_EXPECTATIONS;
-    var marginal = ind.perfs.MARGINAL;
-    var meets = ind.perfs.MEETS_EXPECTATIONS;
-    var exceeds = ind.perfs.EXCEEDS_EXPECTATIONS;
-    var total = below + marginal + meets + exceeds;
-    results.push(Math.round(below/total * 100));
-    results.push(Math.round(marginal/total * 100));
-    results.push(Math.round(meets/total * 100));
-    results.push(Math.round(exceeds/total * 100));
-    let clone = JSON.parse(JSON.stringify(this.barChartDataPerf));
-    clone[0].data = results;
-    this.barChartDataPerf = clone;
+      var results: number[] = [];
+      var below = ind.perfs.BELOW_EXPECTATIONS;
+      var marginal = ind.perfs.MARGINAL;
+      var meets = ind.perfs.MEETS_EXPECTATIONS;
+      var exceeds = ind.perfs.EXCEEDS_EXPECTATIONS;
+      var total = below + marginal + meets + exceeds;
+      results.push(Math.round(below/total * 100));
+      results.push(Math.round(marginal/total * 100));
+      results.push(Math.round(meets/total * 100));
+      results.push(Math.round(exceeds/total * 100));
+      let clone = JSON.parse(JSON.stringify(this.barChartDataPerf));
+      clone[0].data = results;
+      this.barChartDataPerf = clone;
   }
 
    ngOnInit(){

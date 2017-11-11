@@ -41,7 +41,7 @@ export class AttributeDetailComponent implements OnInit {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Number of Students'
+          labelString: 'Percentage of Students'
         }
       }],
       xAxes: [{
