@@ -1,12 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PerfDist } from '../perfs/perfdist';
+import * as jsPDF from 'jspdf';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'aggregate-detail',
   template: `
     <div *ngIf="aggregate">
+    <button (click)="exportPDF()">Export PDF</button>
     <div>
-      <table>
+    <h2 id="title1">Aggregated Scores for Software Engineering:</h2>
+      <table id="table1">
         <tr>
           <th>Type</th>
           <th>Performance Level</th>
@@ -33,9 +37,8 @@ import { PerfDist } from '../perfs/perfdist';
         </tr>
       </table>
     </div>
-    <h2>Aggregated Scores:</h2>
         <div style="display: block">
-              <canvas baseChart
+              <canvas id="chart1" baseChart
               [datasets]="barChartDataPerf"
               [labels]="barChartLabelsPerf"
               [options]="barChartOptionsPerf"
@@ -70,8 +73,38 @@ import { PerfDist } from '../perfs/perfdist';
     }
   `]
 })
+
 export class AggregateDetailComponent implements OnInit {
   @Input() aggregate: PerfDist[];
+
+    public exportPDF(){
+
+    var doc = new jsPDF();
+
+    html2canvas(document.getElementById("title1"), {
+        onrendered: function (canvas) {
+
+              var newTitle = canvas.toDataURL("image/png");
+              doc.addImage(newTitle, 'JPEG', 20, 10);
+            }
+          });
+
+    html2canvas(document.getElementById("chart1"), {
+        onrendered: function (canvas) {
+
+              var newChart = canvas.toDataURL("image/png");
+              doc.addImage(newChart, 'JPEG', 3, 180);
+            }
+          });
+        html2canvas(document.getElementById("table1"), {
+        onrendered: function (canvas) {
+
+              var newTable = canvas.toDataURL("image/png");
+              doc.addImage(newTable, 'JPEG', 32, 30);
+              doc.save('sample Aggregated Ind.pdf');
+            }
+          })
+  }
 
   public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
   public tableLabels:string[] = ['BELOW EXPECTATIONS (0-54%)', 'MARGINAL EXPECTATIONS (55-64%)', 'MEETS EXPECTATIONS (65-79%)', "EXCEEDS EXPECTATIONS (80-100%)"];

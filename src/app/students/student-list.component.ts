@@ -7,6 +7,8 @@ import { Student } from '../student';
   template: `
      <div class="col-md-3">
         <ul class="students">
+        <li [class.selected]="compiled"
+           (click)="onSelectCompiled()">Compiled Student Data Table</li>
           <li *ngFor="let student of students"
             [class.selected]="student === selectedStudent"
             (click)="onSelect(student)">
@@ -15,9 +17,41 @@ import { Student } from '../student';
         </ul>
         </div>
         <div class="col-md-9">
+        <div *ngIf="selectedStudent && !compiled">
         <student-detail [student]="selectedStudent"></student-detail>
+        </div>
           <br>
+          <div *ngIf="compiled">
             <div>
+      <table>
+        <tr>
+          <th>Student ID #</th>
+          <th>Student Name</th>
+          <th>Indicator Name</th>
+          <th>Percentage Score</th>
+        </tr>
+        <tr *ngFor="let element of tableLoader">
+          <td>{{element.sID}}</td>
+          <td class="noPadding">
+            <tr *ngFor="let name of studentNames" class="inner">
+              <td>{{name}}</td>
+            </tr>
+          </td>
+          <td class="noPadding">
+            <tr *ngFor="let ind of indicatorNames" class="inner">
+              <td class="wider">{{ind}}</td>
+            </tr>
+          </td>
+          <td class="noPadding">
+            <tr *ngFor="let percentage of element.percentData" class="inner">
+              <td class="wider">{{percentage}}</td>
+            </tr>
+          </td>
+        </tr>
+      </table>
+    </div>
+    </div>
+            <h2>Student details:</h2>
               <div style="display: block">
                 <canvas baseChart
                 [datasets]="barChartData"
@@ -29,7 +63,6 @@ import { Student } from '../student';
                 (chartClick)="chartClicked($event)"></canvas>
               </div>
           </div>
-        </div>
 
     `,
   styles: [`
@@ -44,6 +77,7 @@ import { Student } from '../student';
       width: 15em;
     }
     .students li {
+      text-align: center;
       cursor: pointer;
       position: relative;
       left: 0;
@@ -80,6 +114,29 @@ import { Student } from '../student';
       margin-right: .8em;
       border-radius: 4px 0 0 4px;
     }
+      table, th, td {
+      border: 1px solid grey;
+      border-collapse: collapse;
+      padding: 5px;
+      margin: 0px;
+      text-align: center;
+    }
+    .inner td{
+      border: none;
+    }
+    .wider {
+      width: 120px;
+      text-align: center;
+    }
+    .noPadding {
+      padding: 0px;
+    }
+    table tr:nth-child(odd) {
+      background-color: #f1f1f1;
+    }
+    table tr:nth-child(even) {
+      background-color: #ffffff;
+    }
   `],
     // Providers
     providers: [StudentService]
@@ -89,6 +146,7 @@ export class StudentListComponent implements OnInit {
   // Private property for binding
   students: Student[];
   selectedStudent: Student;
+  compiled: boolean = false;
 
   constructor(private studentService: StudentService) {
 
@@ -101,6 +159,13 @@ export class StudentListComponent implements OnInit {
  onSelect(student: Student): void {
     this.selectedStudent = student;
     this.refreshChart(this.selectedStudent);
+    this.drawTable(this.students);
+    this.compiled = false;
+  }
+
+  onSelectCompiled(): void {
+    this.selectedStudent = null;
+    this.compiled = true;
   }
 
    public barChartOptions:any = {
@@ -112,12 +177,25 @@ export class StudentListComponent implements OnInit {
           max: 100,
           min: 0,
           beginsAtZero: true
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Percentage Score'
+        }
+      }],
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Indicator Name'
         }
       }]
     }
   };
 
   public barChartLabels:string[] = [''];
+  public studentNames:string[] = [''];
+  public indicatorNames:string[] = [''];
+  public tableLoader: TableLoader[] = [];
 
   public barChartType:string = 'bar';
   public barChartLegend:boolean = false;
@@ -135,15 +213,37 @@ export class StudentListComponent implements OnInit {
         results.push(rounder);
         this.barChartLabels.push(student.attributeList[i].indicatorScores[j].name);
       }
-     
     }
     let clone = JSON.parse(JSON.stringify(this.barChartData));
     clone[0].data = results;
     this.barChartData = clone;
   }
 
+    public drawTable(student: Student[]): void {
+    this.tableLoader = [];
+    for(let stud of student){
+      var load: TableLoader = new TableLoader();
+    for(var i = 0; i< stud.attributeList.length; i++){
+      for(var j = 0; j < stud.attributeList[i].indicatorScores.length; j++){
+        var rounder = Math.round(stud.attributeList[i].indicatorScores[j].result); //TODO: Round to 2 decimal places (right now at none)
+        load.percentData.push(rounder);
+        this.indicatorNames.push(stud.attributeList[i].indicatorScores[j].name);
+      }
+      }
+
+      load.label = stud.attributeList[i].indicatorScores[j].name;
+
+      this.tableLoader.push(load);
+    }
+  }
+
   // Load data ones componet is ready
   ngOnInit() {
     this.getStudents();
   }
+}
+    export class TableLoader {
+  label: string;
+  sID: number[] = [];
+  percentData: number[] = [];
 }

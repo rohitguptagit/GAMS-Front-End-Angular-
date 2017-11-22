@@ -1,5 +1,5 @@
 // Imports
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectorRef} from '@angular/core';
 import { Performance } from '../performance';
 import { PerfDist } from '../perfs/perfdist';
 import { IndicatorDetailComponent } from './indicator-detail.component';
@@ -19,10 +19,11 @@ import { AggregateDetailComponent } from '../attributes/aggregate-detail.compone
           <li [class.selected]="agg"
           (click)="onSelectAgg()"> Aggregated Indicators</li>
         </ul>
+         <button (click)="exportPDF()">Export All to PDF</button>
         <div *ngIf="agg">
            <aggregate-detail [aggregate]="major.range.inds"></aggregate-detail>
         </div>
-        <div *ngIf="selectedInd && !agg">
+        <div *ngIf="selectedInd">
           <indicator-detail [indicator]="selectedInd"></indicator-detail>
         </div>
         </div>
@@ -77,12 +78,30 @@ import { AggregateDetailComponent } from '../attributes/aggregate-detail.compone
       margin-right: .8em;
       border-radius: 4px 0 0 4px;
     }
-  `],
+  `]
 })
 // Component class implementing OnInit
 export class IndicatorListComponent implements OnInit {
   
   @Input() major: Performance;
+
+  //constructor(private ref: ComponentFactoryResolver){}
+
+  @ViewChild(IndicatorDetailComponent) child: IndicatorDetailComponent;
+  
+  public  exportPDF(){
+    for(let a of this.major.range.inds){
+      this.selectedInd = a;
+      console.log(this.child)
+    }
+    //var doc = new jsPDF();
+    //doc = this.child.exportPDF(doc, false);
+    //this.child.exportPDF(doc, true);
+  }
+
+  public createComponent(){
+    this.child
+  }
 
   title = 'Available Indicators:';
 

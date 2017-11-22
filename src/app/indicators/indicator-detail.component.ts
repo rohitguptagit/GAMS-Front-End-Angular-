@@ -1,32 +1,131 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PerfDist } from '../perfs/perfdist';
+import * as jsPDF from 'jspdf';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'indicator-detail',
   template: `
     <div *ngIf="indicator">
-    <button ng-click="exportPDF()">Export PDF</button>
-      <h2>Indicator details:</h2>
+    <button (click)="exportPDF()">Export PDF</button>
+    <div>
+    <h2 id="title1">Indicator Details</h2>
+        <!--  <div>
+        <label>Course Name: &nbsp;</label>{{student.sId}}
+      </div>
+      <div>
+        <label>Course Code: &nbsp;</label>{{student.lastName}}
+      </div>
+      <div>
+        <label>Major: &nbsp;</label>{{student.firstName}}
+      </div>
+      <div>
+        <label>Indicator: &nbsp;</label>{{student.major}}
+      </div> -->
+      <table id= "table1">
+        <tr>
+          <th>Type</th>
+          <th>Performance Level</th>
+          <th>Student Count</th>
+          <th>% of Students</th>
+        </tr>
+        <tr *ngFor="let element of tableLoader">
+          <td>{{element.label}}</td>
+          <td class="noPadding">
+            <tr *ngFor="let level of tableLabels" class="inner">
+              <td>{{level}}</td>
+            </tr>
+          </td>
+          <td class="noPadding">
+            <tr *ngFor="let count of element.countData" class="inner">
+              <td class="wider">{{count}}</td>
+            </tr>
+          </td>
+          <td class="noPadding">
+            <tr *ngFor="let percentage of element.percentData" class="inner">
+              <td class="wider">{{percentage}}</td>
+            </tr>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div>
           <div style="display: block">
-                <canvas baseChart
+                <canvas id="chart1" baseChart
                 [datasets]="barChartDataPerf"
                 [labels]="barChartLabelsPerf"
                 [options]="barChartOptionsPerf"
                 [legend]="barChartLegendPerf"
                 [chartType]="barChartTypePerf"></canvas>
             </div>
+            </div>
     </div>
-  `
+  `,
+    styles: [`
+    table, th, td {
+      border: 1px solid grey;
+      border-collapse: collapse;
+      padding: 5px;
+      margin: 0px;
+      text-align: center;
+    }
+    .inner td{
+      border: none;
+    }
+    .wider {
+      width: 120px;
+      text-align: center;
+    }
+    .noPadding {
+      padding: 0px;
+    }
+    table tr:nth-child(odd) {
+      background-color: #f1f1f1;
+    }
+    table tr:nth-child(even) {
+      background-color: #ffffff;
+    }
+  `]
 })
 export class IndicatorDetailComponent implements OnInit {
   @Input() indicator: PerfDist;
 
   public exportPDF(){
-    var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
-    //pdfMake.createPdf(docDefinition).open();
+
+    var doc = new jsPDF();
+
+    html2canvas(document.getElementById("title1"), {
+        onrendered: function (canvas) {
+
+              var newTitle = canvas.toDataURL("image/png");
+              doc.addImage(newTitle, 'JPEG', 20, 10);
+            }
+          });
+
+    html2canvas(document.getElementById("chart1"), {
+        onrendered: function (canvas) {
+
+              var newChart = canvas.toDataURL("image/png");
+              doc.addImage(newChart, 'JPEG', 3, 120);
+            }
+          });
+        html2canvas(document.getElementById("table1"), {
+        onrendered: function (canvas) {
+
+              var newTable = canvas.toDataURL("image/png");
+              doc.addImage(newTable, 'JPEG', 32, 60);
+              doc.save("sample PDF.pdf");
+            }
+          });
+        //if(newPage){
+          //doc.addPage();
+        //}
+      //return doc;
   }
 
   public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
+  public tableLabels:string[] = ['BELOW EXPECTATIONS (0-54%)', 'MARGINAL EXPECTATIONS (55-64%)', 'MEETS EXPECTATIONS (65-79%)', "EXCEEDS EXPECTATIONS (80-100%)"];
+  public tableLoader: TableLoader[] = [];
 
   public barChartTypePerf:string = 'bar';
   public barChartLegendPerf:boolean = false;
@@ -75,12 +174,42 @@ export class IndicatorDetailComponent implements OnInit {
       this.barChartDataPerf = clone;
   }
 
+  public drawTable(ind: PerfDist): void {
+    this.tableLoader = [];
+      var load: TableLoader = new TableLoader();
+      var below = ind.perfs.BELOW_EXPECTATIONS;
+      var marginal = ind.perfs.MARGINAL;
+      var meets = ind.perfs.MEETS_EXPECTATIONS;
+      var exceeds = ind.perfs.EXCEEDS_EXPECTATIONS;
+      var total = below + marginal + meets + exceeds;
+      load.percentData.push(Math.round(below/total * 100));
+      load.percentData.push(Math.round(marginal/total * 100));
+      load.percentData.push(Math.round(meets/total * 100));
+      load.percentData.push(Math.round(exceeds/total * 100));
+      load.countData.push(below);
+      load.countData.push(marginal);
+      load.countData.push(meets);
+      load.countData.push(exceeds);
+
+      load.label = ind.name;
+
+      this.tableLoader.push(load);
+    }
+
    ngOnInit(){
     this.drawIndicatorPerformanceChart(this.indicator);
+    this.drawTable(this.indicator);
   }
 
   ngOnChanges(){
     this.drawIndicatorPerformanceChart(this.indicator);
+    this.drawTable(this.indicator);
   }
+}
+
+  export class TableLoader {
+  label: string;
+  countData: number[] = [];
+  percentData: number[] = [];
 }
 

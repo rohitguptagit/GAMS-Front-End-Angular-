@@ -38,6 +38,4 @@ export class AppComponent implements OnInit {
 
   }
  
-
-// this.drawIndicatorPerformanceChart(this.performances[0]);
 }
