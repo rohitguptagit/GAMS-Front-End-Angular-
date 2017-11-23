@@ -1,32 +1,39 @@
 // Imports
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList} from '@angular/core';
 import { Performance } from '../performance';
 import { PerfDist } from '../perfs/perfdist';
 import { IndicatorDetailComponent } from './indicator-detail.component';
 import { AggregateDetailComponent } from '../attributes/aggregate-detail.component';
+import * as jsPDF from 'jspdf';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'indicator-list',
   template: `
-     <div *ngIf="major">
+     <div *ngIf="major" id="majors">
       <h3>{{title}}</h3>
        <ul class="inds">
           <li *ngFor="let ind of major.range.inds"
           [class.selected]="ind === selectedInd"
             (click)="onSelect(ind)">
             {{ind.name}}
+
+            <indicator-detail [indicator]="ind" [style.display]="'none'"></indicator-detail>
           </li>
           <li [class.selected]="agg"
           (click)="onSelectAgg()"> Aggregated Indicators</li>
         </ul>
-         <button (click)="exportPDF()">Export All to PDF</button>
+        <aggregate-detail [aggregate]="major.range.inds" [style.display]="'none'"></aggregate-detail>
+
+        <button (click)="exportPDF()">Export All to PDF</button>
         <div *ngIf="agg">
            <aggregate-detail [aggregate]="major.range.inds"></aggregate-detail>
         </div>
         <div *ngIf="selectedInd">
           <indicator-detail [indicator]="selectedInd"></indicator-detail>
         </div>
-        </div>
+
+      </div>
         
     `,
   styles: [`
@@ -87,15 +94,19 @@ export class IndicatorListComponent implements OnInit {
 
   //constructor(private ref: ComponentFactoryResolver){}
 
-  @ViewChild(IndicatorDetailComponent) child: IndicatorDetailComponent;
+  @ViewChildren(IndicatorDetailComponent) child:QueryList<IndicatorDetailComponent>;
   
   public  exportPDF(){
-    for(let a of this.major.range.inds){
-      this.selectedInd = a;
-      console.log(this.child)
-    }
-    //var doc = new jsPDF();
-    //doc = this.child.exportPDF(doc, false);
+    var doc = new jsPDF();
+    doc = this.child.toArray()[0].exportPDF(doc, false);
+    doc = this.child.toArray()[1].exportPDF(doc, false);
+    doc = this.child.toArray()[2].exportPDF(doc, false);
+    doc = this.child.toArray()[3].exportPDF(doc, false);
+    html2canvas(document.getElementById("majors"), {
+        onrendered: function (canvas) {
+              //doc.save("sampleMajor.pdf")
+            }
+          });
     //this.child.exportPDF(doc, true);
   }
 

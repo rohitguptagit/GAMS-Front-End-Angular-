@@ -7,7 +7,6 @@ import * as html2canvas from 'html2canvas';
   selector: 'aggregate-detail',
   template: `
     <div *ngIf="aggregate">
-    <button (click)="exportPDF()">Export PDF</button>
     <div>
     <h2 id="title1">Aggregated Scores for Software Engineering:</h2>
       <table id="table1">

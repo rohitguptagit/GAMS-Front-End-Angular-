@@ -7,7 +7,7 @@ import * as html2canvas from 'html2canvas';
   selector: 'indicator-detail',
   template: `
     <div *ngIf="indicator">
-    <button (click)="exportPDF()">Export PDF</button>
+    
     <div>
     <h2 id="title1">Indicator Details</h2>
         <!--  <div>
@@ -90,9 +90,7 @@ import * as html2canvas from 'html2canvas';
 export class IndicatorDetailComponent implements OnInit {
   @Input() indicator: PerfDist;
 
-  public exportPDF(){
-
-    var doc = new jsPDF();
+  public exportPDF(doc:jsPDF, newPage:boolean): jsPDF{
 
     html2canvas(document.getElementById("title1"), {
         onrendered: function (canvas) {
@@ -114,13 +112,12 @@ export class IndicatorDetailComponent implements OnInit {
 
               var newTable = canvas.toDataURL("image/png");
               doc.addImage(newTable, 'JPEG', 32, 60);
-              doc.save("sample PDF.pdf");
             }
           });
         //if(newPage){
           //doc.addPage();
         //}
-      //return doc;
+      return doc;
   }
 
   public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
