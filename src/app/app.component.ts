@@ -12,7 +12,7 @@ import { PerformanceService } from './performance.service';
   <nav class="navbar navbar navbar-static-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" routerLink="/">GAMS</a>
+      <a class="navbar-brand" routerLink="/home" routerLinkActive="active">GAMS Home</a>
     </div>
     <ul class="nav navbar-nav">
       <li><a routerLink="/students"  routerLinkActive="active">Student Data</a></li>

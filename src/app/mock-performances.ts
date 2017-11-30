@@ -69,7 +69,11 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   },
   {
     "name": "Materials Engineering CO-OP",
@@ -141,7 +145,11 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   },
   {
     "name": "Civil Engineering",
@@ -213,7 +221,11 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   },
   {
     "name": "Mining Engrg: Co-op Pgm",
@@ -285,7 +297,11 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   },
   {
     "name": "Chemical Engineering",
@@ -357,7 +373,11 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   },
   {
     "name": "Electrical Engineering",
@@ -429,7 +449,11 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   },
   {
     "name": "Mechanical Engineering",
@@ -501,7 +525,11 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   },
   {
     "name": "Computer Engineering",
@@ -573,7 +601,11 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   },
   {
     "name": "Unknown",
@@ -645,6 +677,10 @@ import { Performance } from './performance'; export const PERFORMANCES: Performa
           "name": "Individual and Team Work"
         }
       ]
-    }
+    },
+    "term": "Winter 2017",
+    "courseCode": "FACC",
+    "courseNumber": "400",
+    "section": "001"
   }
 ];

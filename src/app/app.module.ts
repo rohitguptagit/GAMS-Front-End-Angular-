@@ -5,6 +5,7 @@ import { ChartsModule } from 'ng2-charts';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent }  from './app.component';
+import { HomeComponent } from './home/home.component';
 import { MajorListComponent }    from './indicators/major-list.component';
 import { AttrMajorListComponent }    from './attributes/attr-major-list.component';
 import { StudentDetailComponent } from './students/student-detail.component';
@@ -25,6 +26,7 @@ import { routing } from './app.routes';
   ],
   declarations: [
     AppComponent,
+    HomeComponent,
     MajorListComponent,
     AttrMajorListComponent,
     StudentDetailComponent,

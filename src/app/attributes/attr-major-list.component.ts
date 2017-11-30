@@ -8,7 +8,8 @@ import { AttributeListComponent } from './attribute-list.component'
   template: `
      <div class="col-md-3">
         <ul class="majors">
-
+        <label>Graduate Attribute Analysis</label>
+        <br>
           <li *ngFor="let major of performances"
           [class.selected]="major === selectedMajor"
             (click)="onSelect(major)">

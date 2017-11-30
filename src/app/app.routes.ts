@@ -2,7 +2,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders }  from '@angular/core';
 
-
+import { homeRoutes }		from './home/home.routes';
 import { studentRoutes }    from './students/student.routes';
 import { indicatorRoutes }  from './indicators/indicator.routes';
 import { attributeRoutes }  from './attributes/attribute.routes';
@@ -14,6 +14,7 @@ export const routes: Routes = [
     redirectTo: '/',
     pathMatch: 'full'
   },
+  ...homeRoutes,
   ...studentRoutes,
   ...indicatorRoutes,
   ...attributeRoutes

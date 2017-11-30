@@ -6,6 +6,8 @@ import { PerfDist } from '../perfs/perfdist';
   template: `
     <div *ngIf="attribute">
      <div>
+     <h2>Graduate Attribute details:</h2>
+     <br><br>
       <table>
         <tr>
           <th>Type</th>
@@ -32,8 +34,8 @@ import { PerfDist } from '../perfs/perfdist';
           </td>
         </tr>
       </table>
+      <br><br>
     </div>
-      <h2>Graduate Attribute details:</h2>
           <div style="display: block">
                 <canvas baseChart
                 [datasets]="barChartDataPerf"

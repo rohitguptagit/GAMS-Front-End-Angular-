@@ -8,7 +8,7 @@ import * as html2canvas from 'html2canvas';
   template: `
     <div *ngIf="aggregate">
     <div>
-    <h2 id="title1">Aggregated Scores for Software Engineering:</h2>
+    <h2 id="title1">Aggregated Scores:</h2>
       <table id="table1">
         <tr>
           <th>Type</th>
@@ -37,7 +37,7 @@ import * as html2canvas from 'html2canvas';
       </table>
     </div>
     <br><br>
-      <div style="display: block" style="margin-left:-30px;">
+      <div style="display: block">
             <canvas id="chart1" baseChart
             [datasets]="barChartDataPerf"
             [labels]="barChartLabelsPerf"

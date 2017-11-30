@@ -11,7 +11,19 @@ import * as html2canvas from 'html2canvas';
   selector: 'indicator-list',
   template: `
      <div *ngIf="major" id="majors">
-      <h3>{{title}}</h3>
+      <div>
+      <div>
+        <label>Course Name: &nbsp;</label>{{major.courseCode}} {{major.courseNumber}}
+      </div>
+      <div>
+        <label>Course Section: &nbsp;</label>{{major.section}}
+      </div>
+      <div>
+        <label>Term: &nbsp;</label>{{major.term}}
+      </div>
+        <br>
+        <h3>{{title}}</h3>
+        <br>
        <ul class="inds">
           <li *ngFor="let ind of major.range.inds"
           [class.selected]="ind === selectedInd"
@@ -21,8 +33,8 @@ import * as html2canvas from 'html2canvas';
           <li [class.selected]="agg"
           (click)="onSelectAgg()"> Aggregated Indicators</li>
         </ul>
-        
-        <button (click)="toggleHidden()">Toggle Hidden Elements</button>
+
+        <button (click)="toggleHidden()">Toggle for Export</button>
         <button [disabled]="exportDisabled" (click)="exportPDF()">Export All to PDF</button>
         <div *ngIf="agg">
            <aggregate-detail [aggregate]="major.range.inds"></aggregate-detail>
@@ -31,7 +43,7 @@ import * as html2canvas from 'html2canvas';
           <indicator-detail [indicator]="selectedInd"></indicator-detail>
         </div>
         <div id="fullExport">
-          <div *ngFor="let ind of major.range.inds">
+          <div *ngFor="let ind of major.range.inds" >
             <indicator-detail class="export" [indicator]="ind" [style.display]="hiding"></indicator-detail>
           </div>
             <aggregate-detail class="export" [aggregate]="major.range.inds" [style.display]="hiding"></aggregate-detail>
@@ -119,6 +131,7 @@ export class IndicatorListComponent implements OnInit {
     var doc = new jsPDF();
     var elements = document.getElementsByClassName("export");
 
+    console.log(this.major)
     var i = 0;
     for(; i < elements.length; i++){
       html2canvas(elements[i], {
@@ -126,7 +139,7 @@ export class IndicatorListComponent implements OnInit {
           console.log(elements[i])
           console.log(canvas)
           var elem = canvas.toDataURL("image/png");
-          doc.addImage(elem, 'png', 10, 10);
+          doc.addImage(elem, 'png', 5, 10);
           if(i < elements.length - 1){
             doc.addPage();
           }
@@ -134,9 +147,11 @@ export class IndicatorListComponent implements OnInit {
       });
       await this.sleep(400);
     }
+    var self = this;
     html2canvas(elements[i], {
       onrendered: function (canvas) {
-          doc.save("sampleAll.pdf")
+          doc.save("IndicatorData"+"_"+self.major.name+"_"+self.major.term+"_"+self.major.courseCode+"_"+self.major.courseNumber+"_"
+            +self.major.section+".pdf")
         }
       });
   }

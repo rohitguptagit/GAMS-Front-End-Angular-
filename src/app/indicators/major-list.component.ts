@@ -8,7 +8,8 @@ import { IndicatorListComponent } from './indicator-list.component'
   template: `
      <div class="col-md-3">
         <ul class="majors">
-
+        <label>Indicator Analysis</label>
+          <br>
           <li *ngFor="let major of performances"
           [class.selected]="major === selectedMajor"
             (click)="onSelect(major)">

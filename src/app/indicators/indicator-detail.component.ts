@@ -10,18 +10,7 @@ import * as html2canvas from 'html2canvas';
     
       <div>
       <h2 id="title1">Indicator Details</h2>
-          <!--  <div>
-          <label>Course Name: &nbsp;</label>{{student.sId}}
-        </div>
-        <div>
-          <label>Course Code: &nbsp;</label>{{student.lastName}}
-        </div>
-        <div>
-          <label>Major: &nbsp;</label>{{student.firstName}}
-        </div>
-        <div>
-          <label>Indicator: &nbsp;</label>{{student.major}}
-        </div> -->
+      <br><br>
         <table id= "table1">
           <tr>
             <th>Type</th>
@@ -51,7 +40,7 @@ import * as html2canvas from 'html2canvas';
       </div>
       <br><br>
       <div>
-        <div style="display: block" style="margin-left:-30px;">
+        <div style="display: block">
               <canvas id="chart1" baseChart
               [datasets]="barChartDataPerf"
               [labels]="barChartLabelsPerf"
@@ -67,7 +56,7 @@ import * as html2canvas from 'html2canvas';
       border: 1px solid grey;
       border-collapse: collapse;
       padding: 5px;
-      margin: 0px;
+      margin: 10px;
       text-align: center;
     }
     .inner td{
@@ -75,10 +64,6 @@ import * as html2canvas from 'html2canvas';
     }
     .wider {
       width: 120px;
-      text-align: center;
-    }
-    .thicc {
-      width: 140px;
       text-align: center;
     }
     .noPadding {
