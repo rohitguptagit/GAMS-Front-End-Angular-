@@ -7,8 +7,9 @@ import { Student } from '../student';
   template: `
      <div class="col-md-3">
         <ul class="students">
-        <li [class.selected]="compiled"
-           (click)="onSelectCompiled()">Compiled Student Data Table</li>
+          <li [class.selected]="compiled"
+             (click)="onSelectCompiled()">Compiled Student Data Table
+          </li>
           <li *ngFor="let student of students"
             [class.selected]="student === selectedStudent"
             (click)="onSelect(student)">
@@ -32,11 +33,7 @@ import { Student } from '../student';
         </tr>
         <tr *ngFor="let element of tableLoader">
           <td>{{element.sID}}</td>
-          <td class="noPadding">
-            <tr *ngFor="let name of studentNames" class="inner">
-              <td>{{name}}</td>
-            </tr>
-          </td>
+          <td>{{element.name}}</td>
           <td class="noPadding">
             <tr *ngFor="let ind of indicatorNames" class="inner">
               <td class="wider">{{ind}}</td>
@@ -158,13 +155,13 @@ export class StudentListComponent implements OnInit {
 
  onSelect(student: Student): void {
     this.selectedStudent = student;
-    this.refreshChart(this.selectedStudent);
-    this.drawTable(this.students);
+    this.refreshChart(this.selectedStudent);    
     this.compiled = false;
   }
 
   onSelectCompiled(): void {
     this.selectedStudent = null;
+    this.drawTable(this.students);
     this.compiled = true;
   }
 
@@ -194,9 +191,8 @@ export class StudentListComponent implements OnInit {
 
   public barChartLabels:string[] = [''];
   public studentNames:string[] = [''];
-  public indicatorNames:string[] = [''];
+  public indicatorNames:string[] = [];
   public tableLoader: TableLoader[] = [];
-
   public barChartType:string = 'bar';
   public barChartLegend:boolean = false;
 
@@ -219,19 +215,29 @@ export class StudentListComponent implements OnInit {
     this.barChartData = clone;
   }
 
-    public drawTable(student: Student[]): void {
+  public drawTable(students: Student[]): void {
     this.tableLoader = [];
-    for(let stud of student){
-      var load: TableLoader = new TableLoader();
-    for(var i = 0; i< stud.attributeList.length; i++){
-      for(var j = 0; j < stud.attributeList[i].indicatorScores.length; j++){
-        var rounder = Math.round(stud.attributeList[i].indicatorScores[j].result); //TODO: Round to 2 decimal places (right now at none)
-        load.percentData.push(rounder);
-        this.indicatorNames.push(stud.attributeList[i].indicatorScores[j].name);
-      }
-      }
 
-      load.label = stud.attributeList[i].indicatorScores[j].name;
+    var stud = students[0];
+    for(let attr of stud.attributeList){
+      if(attr.indicatorScores.length != 0){
+        for(let ind of attr.indicatorScores){
+          this.indicatorNames.push(ind.name);
+        }
+      }
+    }
+    for(let stud of students){
+      var load: TableLoader = new TableLoader();
+      for(var i = 0; i< stud.attributeList.length; i++){
+        for(var j = 0; j < stud.attributeList[i].indicatorScores.length; j++){
+          var rounder = Math.round(stud.attributeList[i].indicatorScores[j].result); //TODO: Round to 2 decimal places (right now at none)
+          load.percentData.push(rounder);
+        }
+      }
+      load.sID = stud.sId;
+      load.name = stud.lastName + ", " + stud.firstName;
+
+      //load.label = this.indicatorNames;
 
       this.tableLoader.push(load);
     }
@@ -242,8 +248,9 @@ export class StudentListComponent implements OnInit {
     this.getStudents();
   }
 }
-    export class TableLoader {
+export class TableLoader {
   label: string;
-  sID: number[] = [];
+  sID: number;
+  name: string;
   percentData: number[] = [];
 }

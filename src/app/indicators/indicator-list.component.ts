@@ -1,5 +1,5 @@
 // Imports
-import { Component, OnInit, Input, ViewChildren, QueryList} from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
 import { Performance } from '../performance';
 import { PerfDist } from '../perfs/perfdist';
 import { IndicatorDetailComponent } from './indicator-detail.component';
@@ -17,23 +17,26 @@ import * as html2canvas from 'html2canvas';
           [class.selected]="ind === selectedInd"
             (click)="onSelect(ind)">
             {{ind.name}}
-
-            <indicator-detail [indicator]="ind" [style.display]="'none'"></indicator-detail>
           </li>
           <li [class.selected]="agg"
           (click)="onSelectAgg()"> Aggregated Indicators</li>
         </ul>
-        <aggregate-detail [aggregate]="major.range.inds" [style.display]="'none'"></aggregate-detail>
-
-        <button (click)="exportPDF()">Export All to PDF</button>
+        
+        <button (click)="toggleHidden()">Toggle Hidden Elements</button>
+        <button [disabled]="exportDisabled" (click)="exportPDF()">Export All to PDF</button>
         <div *ngIf="agg">
            <aggregate-detail [aggregate]="major.range.inds"></aggregate-detail>
         </div>
         <div *ngIf="selectedInd">
           <indicator-detail [indicator]="selectedInd"></indicator-detail>
         </div>
-
-      </div>
+        <div id="fullExport">
+          <div *ngFor="let ind of major.range.inds">
+            <indicator-detail class="export" [indicator]="ind" [style.display]="hiding"></indicator-detail>
+          </div>
+            <aggregate-detail class="export" [aggregate]="major.range.inds" [style.display]="hiding"></aggregate-detail>
+          </div>
+        </div>
         
     `,
   styles: [`
@@ -92,26 +95,50 @@ export class IndicatorListComponent implements OnInit {
   
   @Input() major: Performance;
 
-  //constructor(private ref: ComponentFactoryResolver){}
+  public hiding:string = "none";
+  public exportDisabled: boolean = true;
 
-  @ViewChildren(IndicatorDetailComponent) child:QueryList<IndicatorDetailComponent>;
+  constructor(private changeDetector: ChangeDetectorRef){}
   
-  public  exportPDF(){
-    var doc = new jsPDF();
-    doc = this.child.toArray()[0].exportPDF(doc, false);
-    doc = this.child.toArray()[1].exportPDF(doc, false);
-    doc = this.child.toArray()[2].exportPDF(doc, false);
-    doc = this.child.toArray()[3].exportPDF(doc, false);
-    html2canvas(document.getElementById("majors"), {
-        onrendered: function (canvas) {
-              //doc.save("sampleMajor.pdf")
-            }
-          });
-    //this.child.exportPDF(doc, true);
+  public toggleHidden(){
+    if(this.hiding == "block"){
+      this.hiding = "none";
+      this.exportDisabled = true;
+    }
+    else{
+      this.hiding = "block";
+      this.exportDisabled = false;
+    }
+  } 
+
+  public sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  public createComponent(){
-    this.child
+  public async exportPDF(){
+    var doc = new jsPDF();
+    var elements = document.getElementsByClassName("export");
+
+    var i = 0;
+    for(; i < elements.length; i++){
+      html2canvas(elements[i], {
+        onrendered: function (canvas) {
+          //console.log(elements[i])
+          console.log(canvas)
+          var elem = canvas.toDataURL("image/png");
+          doc.addImage(elem, 'png', 0, 0);
+          if(i < elements.length - 1){
+            doc.addPage();
+          }
+        }
+      });
+      await this.sleep(400);
+    }
+    html2canvas(elements[i], {
+      onrendered: function (canvas) {
+          doc.save("sampleAll.pdf")
+        }
+      });
   }
 
   title = 'Available Indicators:';

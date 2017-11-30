@@ -6,59 +6,60 @@ import * as html2canvas from 'html2canvas';
 @Component({
   selector: 'indicator-detail',
   template: `
-    <div *ngIf="indicator">
+    <div *ngIf="indicator" id="indicator">
     
-    <div>
-    <h2 id="title1">Indicator Details</h2>
-        <!--  <div>
-        <label>Course Name: &nbsp;</label>{{student.sId}}
-      </div>
       <div>
-        <label>Course Code: &nbsp;</label>{{student.lastName}}
+      <h2 id="title1">Indicator Details</h2>
+          <!--  <div>
+          <label>Course Name: &nbsp;</label>{{student.sId}}
+        </div>
+        <div>
+          <label>Course Code: &nbsp;</label>{{student.lastName}}
+        </div>
+        <div>
+          <label>Major: &nbsp;</label>{{student.firstName}}
+        </div>
+        <div>
+          <label>Indicator: &nbsp;</label>{{student.major}}
+        </div> -->
+        <table id= "table1">
+          <tr>
+            <th>Type</th>
+            <th>Performance Level</th>
+            <th>Student Count</th>
+            <th>% of Students</th>
+          </tr>
+          <tr *ngFor="let element of tableLoader">
+            <td>{{element.label}}</td>
+            <td class="noPadding">
+              <tr *ngFor="let level of tableLabels" class="inner">
+                <td>{{level}}</td>
+              </tr>
+            </td>
+            <td class="noPadding">
+              <tr *ngFor="let count of element.countData" class="inner">
+                <td class="wider">{{count}}</td>
+              </tr>
+            </td>
+            <td class="noPadding">
+              <tr *ngFor="let percentage of element.percentData" class="inner">
+                <td class="wider">{{percentage}}</td>
+              </tr>
+            </td>
+          </tr>
+        </table>
       </div>
+      <br><br>
       <div>
-        <label>Major: &nbsp;</label>{{student.firstName}}
+        <div style="display: block">
+              <canvas id="chart1" baseChart
+              [datasets]="barChartDataPerf"
+              [labels]="barChartLabelsPerf"
+              [options]="barChartOptionsPerf"
+              [legend]="barChartLegendPerf"
+              [chartType]="barChartTypePerf"></canvas>
+        </div>
       </div>
-      <div>
-        <label>Indicator: &nbsp;</label>{{student.major}}
-      </div> -->
-      <table id= "table1">
-        <tr>
-          <th>Type</th>
-          <th>Performance Level</th>
-          <th>Student Count</th>
-          <th>% of Students</th>
-        </tr>
-        <tr *ngFor="let element of tableLoader">
-          <td>{{element.label}}</td>
-          <td class="noPadding">
-            <tr *ngFor="let level of tableLabels" class="inner">
-              <td>{{level}}</td>
-            </tr>
-          </td>
-          <td class="noPadding">
-            <tr *ngFor="let count of element.countData" class="inner">
-              <td class="wider">{{count}}</td>
-            </tr>
-          </td>
-          <td class="noPadding">
-            <tr *ngFor="let percentage of element.percentData" class="inner">
-              <td class="wider">{{percentage}}</td>
-            </tr>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div>
-          <div style="display: block">
-                <canvas id="chart1" baseChart
-                [datasets]="barChartDataPerf"
-                [labels]="barChartLabelsPerf"
-                [options]="barChartOptionsPerf"
-                [legend]="barChartLegendPerf"
-                [chartType]="barChartTypePerf"></canvas>
-            </div>
-            </div>
     </div>
   `,
     styles: [`
@@ -89,36 +90,6 @@ import * as html2canvas from 'html2canvas';
 })
 export class IndicatorDetailComponent implements OnInit {
   @Input() indicator: PerfDist;
-
-  public exportPDF(doc:jsPDF, newPage:boolean): jsPDF{
-
-    html2canvas(document.getElementById("title1"), {
-        onrendered: function (canvas) {
-
-              var newTitle = canvas.toDataURL("image/png");
-              doc.addImage(newTitle, 'JPEG', 20, 10);
-            }
-          });
-
-    html2canvas(document.getElementById("chart1"), {
-        onrendered: function (canvas) {
-
-              var newChart = canvas.toDataURL("image/png");
-              doc.addImage(newChart, 'JPEG', 3, 120);
-            }
-          });
-        html2canvas(document.getElementById("table1"), {
-        onrendered: function (canvas) {
-
-              var newTable = canvas.toDataURL("image/png");
-              doc.addImage(newTable, 'JPEG', 32, 60);
-            }
-          });
-        //if(newPage){
-          //doc.addPage();
-        //}
-      return doc;
-  }
 
   public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
   public tableLabels:string[] = ['BELOW EXPECTATIONS (0-54%)', 'MARGINAL EXPECTATIONS (55-64%)', 'MEETS EXPECTATIONS (65-79%)', "EXCEEDS EXPECTATIONS (80-100%)"];
@@ -193,7 +164,7 @@ export class IndicatorDetailComponent implements OnInit {
       this.tableLoader.push(load);
     }
 
-   ngOnInit(){
+  ngOnInit(){
     this.drawIndicatorPerformanceChart(this.indicator);
     this.drawTable(this.indicator);
   }
@@ -204,7 +175,7 @@ export class IndicatorDetailComponent implements OnInit {
   }
 }
 
-  export class TableLoader {
+export class TableLoader {
   label: string;
   countData: number[] = [];
   percentData: number[] = [];

@@ -11,10 +11,9 @@ import { attributeRoutes }  from './attributes/attribute.routes';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/students',
+    redirectTo: '/',
     pathMatch: 'full'
   },
-    // Add dog routes form a different file
   ...studentRoutes,
   ...indicatorRoutes,
   ...attributeRoutes

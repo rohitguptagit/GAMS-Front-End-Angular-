@@ -36,14 +36,15 @@ import * as html2canvas from 'html2canvas';
         </tr>
       </table>
     </div>
-        <div style="display: block">
-              <canvas id="chart1" baseChart
-              [datasets]="barChartDataPerf"
-              [labels]="barChartLabelsPerf"
-              [options]="barChartOptionsPerf"
-              [legend]="barChartLegendPerf"
-              [chartType]="barChartTypePerf"></canvas>
-          </div>
+    <br><br>
+      <div style="display: block">
+            <canvas id="chart1" baseChart
+            [datasets]="barChartDataPerf"
+            [labels]="barChartLabelsPerf"
+            [options]="barChartOptionsPerf"
+            [legend]="barChartLegendPerf"
+            [chartType]="barChartTypePerf"></canvas>
+        </div>
     </div>
   `,
   styles: [`
@@ -75,35 +76,6 @@ import * as html2canvas from 'html2canvas';
 
 export class AggregateDetailComponent implements OnInit {
   @Input() aggregate: PerfDist[];
-
-    public exportPDF(){
-
-    var doc = new jsPDF();
-
-    html2canvas(document.getElementById("title1"), {
-        onrendered: function (canvas) {
-
-              var newTitle = canvas.toDataURL("image/png");
-              doc.addImage(newTitle, 'JPEG', 20, 10);
-            }
-          });
-
-    html2canvas(document.getElementById("chart1"), {
-        onrendered: function (canvas) {
-
-              var newChart = canvas.toDataURL("image/png");
-              doc.addImage(newChart, 'JPEG', 3, 180);
-            }
-          });
-        html2canvas(document.getElementById("table1"), {
-        onrendered: function (canvas) {
-
-              var newTable = canvas.toDataURL("image/png");
-              doc.addImage(newTable, 'JPEG', 32, 30);
-              doc.save('sample Aggregated Ind.pdf');
-            }
-          })
-  }
 
   public barChartLabelsPerf:string[] = ['BELOW EXPECTATIONS', 'MARGINAL EXPECTATIONS', 'MEETS EXPECTATIONS', "EXCEEDS EXPECTATIONS"];
   public tableLabels:string[] = ['BELOW EXPECTATIONS (0-54%)', 'MARGINAL EXPECTATIONS (55-64%)', 'MEETS EXPECTATIONS (65-79%)', "EXCEEDS EXPECTATIONS (80-100%)"];
