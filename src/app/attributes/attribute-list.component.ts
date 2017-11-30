@@ -23,7 +23,6 @@ import * as html2canvas from 'html2canvas';
       </div>
         <br>
         <h3>{{title}}</h3>
-        <br>
        <ul class="atts">
           <li *ngFor="let attr of major.range.atts"
           [class.selected]="attr === selectedAttr"

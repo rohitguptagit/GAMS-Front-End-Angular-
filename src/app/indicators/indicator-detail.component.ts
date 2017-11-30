@@ -9,8 +9,8 @@ import * as html2canvas from 'html2canvas';
     <div *ngIf="indicator" id="indicator">
     
       <div>
-      <h2 id="title1">Indicator Details</h2>
-      <br><br>
+      <h2 id="title1">{{indicator.name}} Scores:</h2>
+
         <table id= "table1">
           <tr>
             <th>Type</th>

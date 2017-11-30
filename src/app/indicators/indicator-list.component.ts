@@ -23,7 +23,6 @@ import * as html2canvas from 'html2canvas';
       </div>
         <br>
         <h3>{{title}}</h3>
-        <br>
        <ul class="inds">
           <li *ngFor="let ind of major.range.inds"
           [class.selected]="ind === selectedInd"

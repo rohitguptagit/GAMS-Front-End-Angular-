@@ -6,8 +6,7 @@ import { PerfDist } from '../perfs/perfdist';
   template: `
     <div *ngIf="attribute">
      <div>
-     <h2>Graduate Attribute details:</h2>
-     <br><br>
+     <h2>{{attribute.name}} Scores:</h2>
       <table>
         <tr>
           <th>Type</th>
