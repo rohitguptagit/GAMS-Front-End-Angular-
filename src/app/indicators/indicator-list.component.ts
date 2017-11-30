@@ -150,7 +150,8 @@ export class IndicatorListComponent implements OnInit {
     var self = this;
     html2canvas(elements[i], {
       onrendered: function (canvas) {
-          doc.save("IndicatorData"+"_"+self.major.name+"_"+self.major.term+"_"+self.major.courseCode+"_"+self.major.courseNumber+"_"
+          doc.save("IndicatorData"+"_"+self.major.name+"_"+self.major.term+
+            "_"+self.major.courseCode+"_"+self.major.courseNumber+"_"
             +self.major.section+".pdf")
         }
       });

@@ -46,6 +46,7 @@ import * as html2canvas from 'html2canvas';
               [labels]="barChartLabelsPerf"
               [options]="barChartOptionsPerf"
               [legend]="barChartLegendPerf"
+              [colors]="barChartColorsPerf"
               [chartType]="barChartTypePerf"></canvas>
         </div>
       </div>
@@ -89,6 +90,13 @@ export class IndicatorDetailComponent implements OnInit {
 
   public barChartDataPerf:any[] = [
     {data: [0, 0, 0, 0] }
+  ];
+
+  public barChartColorsPerf:any[]=[
+    {
+      backgroundColor: '#a64c79',
+      borderWidth: 0
+    },
   ];
 
   public barChartOptionsPerf:any = {

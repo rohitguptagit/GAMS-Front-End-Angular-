@@ -42,6 +42,7 @@ import { PerfDist } from '../perfs/perfdist';
                 [labels]="barChartLabelsPerf"
                 [options]="barChartOptionsPerf"
                 [legend]="barChartLegendPerf"
+                [colors]="barChartColorsPerf"
                 [chartType]="barChartTypePerf"></canvas>
               </div>
     </div>
@@ -85,6 +86,13 @@ export class AttributeDetailComponent implements OnInit {
   public barChartDataPerf:any[] = [
     {data: [0, 0, 0, 0] }
   ];
+
+    public barChartColorsPerf:any[]=[
+      {
+        backgroundColor: '#1a59df',
+        borderWidth: 0
+      },
+    ];
 
   public barChartOptionsPerf:any = {
     scaleShowVerticalLines: false,

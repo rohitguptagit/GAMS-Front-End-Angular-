@@ -43,6 +43,7 @@ import * as html2canvas from 'html2canvas';
             [labels]="barChartLabelsPerf"
             [options]="barChartOptionsPerf"
             [legend]="barChartLegendPerf"
+            [colors]="barChartColorsPerf"
             [chartType]="barChartTypePerf"></canvas>
         </div>
     </div>
@@ -89,7 +90,58 @@ export class AggregateDetailComponent implements OnInit {
       label: '',
       data: [0, 0, 0, 0] 
     }
-    ];
+  ];
+
+  public barChartColorsPerf:any[]=[
+    {
+      backgroundColor: '#0a7bd0',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#ee3e3e',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#41c135',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#38c6f0',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#fd991e',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#a22ff2',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#21f9f3',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#8a9fc6',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#f6546a',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#f921da',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#b46336',
+      borderWidth: 0
+    },
+    {
+      backgroundColor: '#b82577',
+      borderWidth: 0
+    }
+  ];
 
   public barChartOptionsPerf:any = {
     scaleShowVerticalLines: false,

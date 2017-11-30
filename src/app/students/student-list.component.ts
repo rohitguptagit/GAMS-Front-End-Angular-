@@ -55,6 +55,7 @@ import { Student } from '../student';
                 [labels]="barChartLabels"
                 [options]="barChartOptions"
                 [legend]="barChartLegend"
+                [colors]="barChartColors"
                 [chartType]="barChartType"
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
@@ -168,6 +169,14 @@ export class StudentListComponent implements OnInit {
     this.drawTable(this.students);
     this.compiled = true;
   }
+
+  public barChartColors: any[] = [
+    {
+      backgroundColor: '#d00a0a',
+      borderWidth: 0
+    },
+  ];
+
 
    public barChartOptions:any = {
     scaleShowVerticalLines: false,
