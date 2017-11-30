@@ -51,7 +51,7 @@ import * as html2canvas from 'html2canvas';
       </div>
       <br><br>
       <div>
-        <div style="display: block">
+        <div style="display: block" style="margin-left:-30px;">
               <canvas id="chart1" baseChart
               [datasets]="barChartDataPerf"
               [labels]="barChartLabelsPerf"
@@ -75,6 +75,10 @@ import * as html2canvas from 'html2canvas';
     }
     .wider {
       width: 120px;
+      text-align: center;
+    }
+    .thicc {
+      width: 140px;
       text-align: center;
     }
     .noPadding {

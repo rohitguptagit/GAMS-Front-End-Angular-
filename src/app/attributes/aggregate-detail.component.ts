@@ -37,7 +37,7 @@ import * as html2canvas from 'html2canvas';
       </table>
     </div>
     <br><br>
-      <div style="display: block">
+      <div style="display: block" style="margin-left:-30px;">
             <canvas id="chart1" baseChart
             [datasets]="barChartDataPerf"
             [labels]="barChartLabelsPerf"
@@ -82,7 +82,7 @@ export class AggregateDetailComponent implements OnInit {
   public tableLoader: TableLoader[] = [];
 
   public barChartTypePerf:string = 'bar';
-  public barChartLegendPerf:boolean = false;
+  public barChartLegendPerf:boolean = true;
 
   public barChartDataPerf:any[] = [
     {

@@ -123,10 +123,10 @@ export class IndicatorListComponent implements OnInit {
     for(; i < elements.length; i++){
       html2canvas(elements[i], {
         onrendered: function (canvas) {
-          //console.log(elements[i])
+          console.log(elements[i])
           console.log(canvas)
           var elem = canvas.toDataURL("image/png");
-          doc.addImage(elem, 'png', 0, 0);
+          doc.addImage(elem, 'png', 10, 10);
           if(i < elements.length - 1){
             doc.addPage();
           }

@@ -41,7 +41,7 @@ import { Student } from '../student';
           </td>
           <td class="noPadding">
             <tr *ngFor="let percentage of element.percentData" class="inner">
-              <td class="wider">{{percentage}}</td>
+              <td class="thicc">{{percentage}}</td>
             </tr>
           </td>
         </tr>
@@ -123,6 +123,10 @@ import { Student } from '../student';
     }
     .wider {
       width: 120px;
+      text-align: center;
+    }
+    .thicc {
+      width: 140px;
       text-align: center;
     }
     .noPadding {
@@ -219,6 +223,7 @@ export class StudentListComponent implements OnInit {
     this.tableLoader = [];
 
     var stud = students[0];
+    this.indicatorNames = [];
     for(let attr of stud.attributeList){
       if(attr.indicatorScores.length != 0){
         for(let ind of attr.indicatorScores){
